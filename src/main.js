@@ -1,18 +1,16 @@
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
-
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-
 import { renderImgs } from './js/render-functions';
 import { fetchImg } from './js/pixabay-api';
 
-export const setGallery = document.querySelector('ul.gallery');
-export let imgset;
-export let searchImgs;
+const setGallery = document.querySelector('ul.gallery');
+let imgset;
+let searchImgs;
 
-export const perPage = 15;
-export let addPage = 1;
+const perPage = 15;
+let addPage = 1;
 
 const inputfield = document.querySelector('input');
 const fillForm = document.querySelector('form');
@@ -52,7 +50,7 @@ fillForm.addEventListener('submit', async event => {
   try {
     imgset = await fetchImg(searchImgs);
 
-    if (!imgset.length) {
+    if (!imgset.hits.length) {
       iziToast.error({
         color: 'red',
         message: `❌ Sorry, there are no images matching your search query. Please try again!`,
@@ -62,7 +60,7 @@ fillForm.addEventListener('submit', async event => {
       return;
     }
 
-    if (perPage <= imgset.length) {
+    if (perPage <= imgset.hits.length) {
       addImgs.style.display = 'flex';
     } else {
       iziToast.error({
@@ -71,12 +69,12 @@ fillForm.addEventListener('submit', async event => {
         position: 'topRight',
       });
     }
-    renderImgs(imgset);
+    renderImgs(imgset.hits);
     scroll();
   } catch (error) {
     iziToast.error({
       color: 'red',
-      message: `❌ Sorry, there are no images matching your search query. Please try again!`,
+      message: `❌ Sorry, there was an error while fetching images. Please try again!`,
       position: 'topRight',
     });
   } finally {
@@ -94,7 +92,7 @@ addImgs.addEventListener('click', async event => {
   try {
     imgset = await fetchImg(searchImgs);
 
-    if (perPage > imgset.length) {
+    if (perPage > imgset.hits.length) {
       iziToast.error({
         color: 'blue',
         message: `We're sorry, but you've reached the end of search results.`,
@@ -104,13 +102,13 @@ addImgs.addEventListener('click', async event => {
       return;
     }
 
-    renderImgs(imgset);
+    renderImgs(imgset.hits);
     scroll();
 
   } catch (error) {
     iziToast.error({
       color: 'red',
-      message: `❌ Sorry, there are no images matching your search query. Please try again!`,
+      message: `❌ Sorry, there was an error while fetching images. Please try again!`,
       position: 'topRight',
     });
   } finally {
@@ -118,6 +116,7 @@ addImgs.addEventListener('click', async event => {
     handleLoad();
   }
 });
+
 window.onload = handleLoad;
 
 async function scroll() {
