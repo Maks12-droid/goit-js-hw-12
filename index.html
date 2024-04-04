@@ -2,10 +2,10 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <link rel="icon" type="image/svg+xml" href="/goit-js-hw-12/favicon.svg">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HW11</title>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/goit-js-hw-12/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HW12</title>
   
   <script type="module" crossorigin src="/goit-js-hw-12/commonHelpers.js"></script>
   <link rel="modulepreload" crossorigin href="/goit-js-hw-12/assets/vendor-8c59ed88.js">
@@ -21,14 +21,68 @@
       <div class="preloader__item"></div>
     </div>
   </div>
-  <section></section>
-  <form autocomplete="off" id="searchForm">
-    <input type="text" placeholder="Search images..." name="search">
+
+  <form autocomplete="off">
+    <input type="text" placeholder="Search images..." />
     <button type="submit" id="search">Search</button>
   </form>
+
   <ul class="gallery"></ul>
+
+  <button type="button" id="addImg">Load more</button>
+
+  <!-- Loads the specified .html file -->
+  <section class="vite-promo">
+  <div class="container">
+    <div class="wrapper">
+      <h2 class="title">
+        <span class="gradient">Vite</span>
+      </h2>
+      <p class="text">Next Generation Frontend Tooling</p>
+      <p class="tagline">
+        Get ready for a development environment that can finally catch up with
+        you.
+      </p>
+
+      <ul class="actions">
+        <li class="action">
+          <a
+            class="link"
+            href="https://vitejs.dev/guide/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Get Started</a
+          >
+        </li>
+        <li class="action">
+          <a
+            class="link"
+            href="https://github.com/vitejs/vite"
+            target="_blank"
+            rel="noopener noreferrer"
+            >View on GitHub</a
+          >
+        </li>
+      </ul>
+    </div>
+
+    <div class="thumb">
+      <!-- Path to images as from index.html file -->
+      <img
+        class="pic"
+        src="/goit-js-hw-12/assets/vite-logo-51249ca9.png"
+        alt="Vite logo"
+        width="640"
+        height="640"
+      />
+    </div>
+  </div>
+</section>
+
   
   
+  
+  <!-- <script type="module" src="./main.js"></script> -->
 </body>
 
 </html>
