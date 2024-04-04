@@ -14,23 +14,26 @@ let addPage = 1;
 
 const inputfield = document.querySelector('input');
 const fillForm = document.querySelector('form');
-const addImgs = document.querySelector('#addImg'); // Додано імпорт
+const addImgs = document.querySelector('#addImg'); 
 
 const preloader = document.querySelector('.preloader');
 
 const showLoader = () => {
   preloader.style.display = 'flex';
 };
+
 const hideLoader = () => {
   preloader.style.display = 'none';
 };
+
 const handleLoad = () => {
   document.body.classList.add('loaded');
   document.body.classList.remove('loaded_hiding');
 };
 
 fillForm.addEventListener('submit', async event => {
-  event.preventDefault();
+  event.preventDefault(); 
+  
   addPage = 1;
   imgset = {};
   searchImgs = inputfield.value.trim();
@@ -50,7 +53,7 @@ fillForm.addEventListener('submit', async event => {
   try {
     imgset = await fetchImg(searchImgs);
 
-    if (!imgset.hits.length) { // Оновлено перевірку на довжину відповіді
+    if (!imgset.hits.length) { 
       iziToast.error({
         color: 'red',
         message: `❌ Sorry, there are no images matching your search query. Please try again!`,
@@ -70,7 +73,6 @@ fillForm.addEventListener('submit', async event => {
       });
     }
     renderImgs(imgset.hits);
-    inputfield.value = ''; // Очищення поля пошуку
     scroll();
   } catch (error) {
     iziToast.error({
@@ -128,3 +130,4 @@ async function scroll() {
     behavior: 'smooth',
   });
 }
+
