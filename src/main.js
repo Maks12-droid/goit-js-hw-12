@@ -85,12 +85,11 @@ fillForm.addEventListener('submit', async event => {
 
 addImgs.addEventListener('click', async event => {
   event.preventDefault();
-
   showLoader();
   try {
+    currentPage++;
     imgset = await fetchImg(searchImgs, currentPage);
-
-    if (perPage > imgset.hits.length) {
+    if (!imgset.hits.length) {
       iziToast.error({
         color: 'blue',
         message: `We're sorry, but you've reached the end of search results.`,
@@ -99,14 +98,12 @@ addImgs.addEventListener('click', async event => {
       addImgs.style.display = 'none';
       return;
     }
-
-    renderImgs(imgset.hits);
+    renderImgs(imgset.hits, true);
     scroll();
-
   } catch (error) {
     iziToast.error({
       color: 'red',
-      message: `❌ Sorry, there was an error while fetching images. Please try again!`,
+      message: `:x: Sorry, there was an error while fetching images. Please try again!`,
       position: 'topRight',
     });
   } finally {

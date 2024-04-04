@@ -7,8 +7,6 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 export function renderImgs(images) {
   const setGallery = document.querySelector('ul.gallery'); 
 
-  setGallery.innerHTML = '';
-
   const imgGallery = images 
     .map(
       image => `<li class="img-blok">
