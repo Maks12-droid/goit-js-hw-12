@@ -1,9 +1,3 @@
-/**
-  |============================
-  | include css partials with
-  | default @import url()
-  |============================
-*/
 @import url('./reset.css');
 @import url('./vite-promo.css');
 @import url('./header.css');
@@ -14,12 +8,157 @@
   line-height: 24px;
   font-weight: 400;
 
-  color: #242424;
-  background-color: rgba(255, 255, 255, 0.87);
+  color: #696969;
+  background-color: rgba(189, 188, 188, 0.87);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+}
+
+body {
+  max-width: 1440px;
+  display: block;
+  box-sizing: border-box;
+  background-color: #FFFFFF;
+  color: #686666;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+form {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 40px;
+}
+
+input {
+  width: 371px;
+  height: 40px;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 400;
+  color: #464444;
+  border: 1px solid #414040;
+
+}
+
+button {
+  Padding: 8px 16px 8px 16px;
+  border-radius: 8px;
+  background-color: #2d428f;
+  color: #FFFFFF;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.gallery {
+  display: flex;
+  gap: 30px;
+  list-style-type: none;
+  flex-wrap: wrap;
+  margin: 30px;
+  justify-content: center;
+}
+
+.img-blok {
+  width: 360px;
+  border: #424242 solid 1px;
+  background: 5px;
+
+
+}
+
+.image-descript {
+  flex-wrap: nowrap;
+  display: flex;
+  gap: 14px;
+  list-style-type: none;
+  justify-content: center;
+  padding: 10px;
+  height: 48px;
+  font-size: 12px;
+}
+
+p,
+h3 {
+  display: flex;
+  justify-content: center;
+}
+
+img {
+  display: block;
+  height: 200px;
+  width: 360px;
+  object-fit: cover;
+}
+
+.preloader {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: #9796969e;
+  z-index: 1001;
+}
+
+.preloader__row {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  width: 70px;
+  height: 70px;
+  margin-top: -35px;
+  margin-left: -35px;
+  text-align: center;
+  animation: preloader-rotate 2s infinite linear;
+}
+
+.preloader__item {
+  position: absolute;
+  display: inline-block;
+  top: 0;
+  background-color: #183957;
+  border-radius: 100%;
+  width: 35px;
+  height: 35px;
+  animation: preloader-bounce 2s infinite ease-in-out;
+}
+
+.preloader__item:last-child {
+  top: auto;
+  bottom: 0;
+  animation-delay: -1s;
+}
+
+@keyframes preloader-rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes preloader-bounce {
+
+  0%,
+  100% {
+    transform: scale(0);
+  }
+
+  50% {
+    transform: scale(1);
+  }
+}
+
+.loaded_hiding .preloader {
+  transition: 0.3s opacity;
+  opacity: 0;
+}
+
+.loaded .preloader {
+  display: none;
 }
