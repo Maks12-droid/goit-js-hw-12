@@ -92,7 +92,7 @@ addImgs.addEventListener('click', async event => {
 
   showLoader();
   try {
-    imgset = await fetchImg();
+    imgset = await fetchImg(searchImgs);
 
     if (perPage > imgset.length) {
       iziToast.error({
