@@ -50,7 +50,7 @@ fillForm.addEventListener('submit', async event => {
   showLoader();
 
   try {
-    imgset = await fetchImg();
+    imgset = await fetchImg(searchImgs);
 
     if (!imgset.length) {
       iziToast.error({
