@@ -71,6 +71,7 @@ fillForm.addEventListener('submit', async event => {
     }
     renderImgs(imgset.hits);
     scroll();
+    inputfield.value = ''; 
   } catch (error) {
     iziToast.error({
       color: 'red',
