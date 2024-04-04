@@ -1,3 +1,5 @@
+// main.js
+
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 import SimpleLightbox from 'simplelightbox';
@@ -10,22 +12,20 @@ let imgset;
 let searchImgs;
 
 const perPage = 15;
-let addPage = 1;
+let currentPage = 1;
 
 const inputfield = document.querySelector('input');
 const fillForm = document.querySelector('form');
-const addImgBtn = document.querySelector('#addImg');
+const addImgs = document.querySelector('#addImg');
 
 const preloader = document.querySelector('.preloader');
 
 const showLoader = () => {
   preloader.style.display = 'flex';
 };
-
 const hideLoader = () => {
   preloader.style.display = 'none';
 };
-
 const handleLoad = () => {
   document.body.classList.add('loaded');
   document.body.classList.remove('loaded_hiding');
@@ -33,7 +33,7 @@ const handleLoad = () => {
 
 fillForm.addEventListener('submit', async event => {
   event.preventDefault();
-  addPage = 1;
+  currentPage = 1;
   imgset = {};
   searchImgs = inputfield.value.trim();
 
@@ -58,12 +58,12 @@ fillForm.addEventListener('submit', async event => {
         message: `❌ Sorry, there are no images matching your search query. Please try again!`,
         position: 'topRight',
       });
-      addImgBtn.style.display = 'none';
+      addImgs.style.display = 'none';
       return;
     }
 
     if (perPage <= imgset.hits.length) {
-      addImgBtn.style.display = 'flex';
+      addImgs.style.display = 'flex';
     } else {
       iziToast.error({
         color: 'blue',
@@ -85,23 +85,24 @@ fillForm.addEventListener('submit', async event => {
   }
 });
 
-addImgBtn.addEventListener('click', async () => {
-  addPage++;
+addImgs.addEventListener('click', async event => {
+  event.preventDefault();
+
   showLoader();
-
   try {
-    const newImgSet = await fetchImg(searchImgs);
+    imgset = await fetchImg(searchImgs, currentPage);
 
-    if (newImgSet.hits.length === 0) {
+    if (perPage > imgset.hits.length) {
       iziToast.error({
         color: 'blue',
         message: `We're sorry, but you've reached the end of search results.`,
         position: 'topRight',
       });
+      addImgs.style.display = 'none';
       return;
     }
 
-    renderImgs(newImgSet.hits);
+    renderImgs(imgset.hits);
     scroll();
 
   } catch (error) {
@@ -112,6 +113,7 @@ addImgBtn.addEventListener('click', async () => {
     });
   } finally {
     hideLoader();
+    handleLoad();
   }
 });
 
@@ -125,5 +127,6 @@ async function scroll() {
     behavior: 'smooth',
   });
 }
+
 
 
