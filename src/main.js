@@ -81,6 +81,8 @@ fillForm.addEventListener('submit', async event => {
     hideLoader();
     handleLoad();
   }
+
+  inputfield.value = '';
 });
 
 addImgs.addEventListener('click', async event => {
