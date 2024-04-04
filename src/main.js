@@ -14,7 +14,7 @@ let addPage = 1;
 
 const inputfield = document.querySelector('input');
 const fillForm = document.querySelector('form');
-const addImgs = document.querySelector('#addImg'); // Додано імпорт
+const addImgs = document.querySelector('#addImg'); 
 
 const preloader = document.querySelector('.preloader');
 
@@ -50,7 +50,7 @@ fillForm.addEventListener('submit', async event => {
   try {
     imgset = await fetchImg(searchImgs);
 
-    if (!imgset.length) { // Оновлено перевірку на довжину відповіді
+    if (!imgset.hits.length) { 
       iziToast.error({
         color: 'red',
         message: `❌ Sorry, there are no images matching your search query. Please try again!`,
@@ -60,7 +60,7 @@ fillForm.addEventListener('submit', async event => {
       return;
     }
 
-    if (perPage <= imgset.length) {
+    if (perPage <= imgset.hits.length) {
       addImgs.style.display = 'flex';
     } else {
       iziToast.error({
@@ -69,7 +69,7 @@ fillForm.addEventListener('submit', async event => {
         position: 'topRight',
       });
     }
-    renderImgs(imgset);
+    renderImgs(imgset.hits);
     scroll();
   } catch (error) {
     iziToast.error({
@@ -92,7 +92,7 @@ addImgs.addEventListener('click', async event => {
   try {
     imgset = await fetchImg(searchImgs);
 
-    if (perPage > imgset.length) {
+    if (perPage > imgset.hits.length) {
       iziToast.error({
         color: 'blue',
         message: `We're sorry, but you've reached the end of search results.`,
@@ -102,7 +102,7 @@ addImgs.addEventListener('click', async event => {
       return;
     }
 
-    renderImgs(imgset);
+    renderImgs(imgset.hits);
     scroll();
 
   } catch (error) {
