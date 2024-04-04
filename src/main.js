@@ -14,7 +14,7 @@ let addPage = 1;
 
 const inputfield = document.querySelector('input');
 const fillForm = document.querySelector('form');
-const addImgs = document.querySelector('#addImg'); 
+const addImgBtn = document.querySelector('#addImg');
 
 const preloader = document.querySelector('.preloader');
 
@@ -32,8 +32,7 @@ const handleLoad = () => {
 };
 
 fillForm.addEventListener('submit', async event => {
-  event.preventDefault(); 
-  
+  event.preventDefault();
   addPage = 1;
   imgset = {};
   searchImgs = inputfield.value.trim();
@@ -53,18 +52,18 @@ fillForm.addEventListener('submit', async event => {
   try {
     imgset = await fetchImg(searchImgs);
 
-    if (!imgset.hits.length) { 
+    if (!imgset.hits.length) {
       iziToast.error({
         color: 'red',
         message: `❌ Sorry, there are no images matching your search query. Please try again!`,
         position: 'topRight',
       });
-      addImgs.style.display = 'none';
+      addImgBtn.style.display = 'none';
       return;
     }
 
     if (perPage <= imgset.hits.length) {
-      addImgs.style.display = 'flex';
+      addImgBtn.style.display = 'flex';
     } else {
       iziToast.error({
         color: 'blue',
@@ -86,26 +85,23 @@ fillForm.addEventListener('submit', async event => {
   }
 });
 
-addImgs.addEventListener('click', async event => {
-  event.preventDefault();
-
-  addPage += 1;
-
+addImgBtn.addEventListener('click', async () => {
+  addPage++;
   showLoader();
-  try {
-    imgset = await fetchImg(searchImgs);
 
-    if (perPage > imgset.hits.length) {
+  try {
+    const newImgSet = await fetchImg(searchImgs);
+
+    if (newImgSet.hits.length === 0) {
       iziToast.error({
         color: 'blue',
         message: `We're sorry, but you've reached the end of search results.`,
         position: 'topRight',
       });
-      addImgs.style.display = 'none';
       return;
     }
 
-    renderImgs(imgset.hits);
+    renderImgs(newImgSet.hits);
     scroll();
 
   } catch (error) {
@@ -116,7 +112,6 @@ addImgs.addEventListener('click', async event => {
     });
   } finally {
     hideLoader();
-    handleLoad();
   }
 });
 
@@ -130,4 +125,5 @@ async function scroll() {
     behavior: 'smooth',
   });
 }
+
 
