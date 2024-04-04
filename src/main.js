@@ -1,5 +1,3 @@
-// main.js
-
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 import SimpleLightbox from 'simplelightbox';
@@ -127,6 +125,7 @@ async function scroll() {
     behavior: 'smooth',
   });
 }
+
 
 
 
