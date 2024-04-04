@@ -14,7 +14,7 @@ let addPage = 1;
 
 const inputfield = document.querySelector('input');
 const fillForm = document.querySelector('form');
-const addImgs = document.querySelector('#addImg'); 
+const addImgs = document.querySelector('#addImg'); // Додано імпорт
 
 const preloader = document.querySelector('.preloader');
 
@@ -50,7 +50,7 @@ fillForm.addEventListener('submit', async event => {
   try {
     imgset = await fetchImg(searchImgs);
 
-    if (!imgset.hits.length) { 
+    if (!imgset.hits.length) { // Оновлено перевірку на довжину відповіді
       iziToast.error({
         color: 'red',
         message: `❌ Sorry, there are no images matching your search query. Please try again!`,
@@ -70,8 +70,8 @@ fillForm.addEventListener('submit', async event => {
       });
     }
     renderImgs(imgset.hits);
+    inputfield.value = ''; // Очищення поля пошуку
     scroll();
-    inputfield.value = ''; 
   } catch (error) {
     iziToast.error({
       color: 'red',
