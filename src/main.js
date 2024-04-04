@@ -2,9 +2,15 @@ import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
+import { renderImgs } from './js/render-functions';
 import { fetchImg } from './js/pixabay-api.js'; 
 
-let searchImgs = '';
+export const setGallery = document.querySelector('ul.gallery');
+export let imgset;
+export let searchImgs;
+
+export const perPage = 15;
+export let addPage = 1;
 
 const inputfield = document.querySelector('input');
 const fillForm = document.querySelector('form');
@@ -76,3 +82,38 @@ fillForm.addEventListener('submit', event => {
 });
 
 export { searchImgs };
+    
+addImgs.addEventListener('click', async event => {
+  event.preventDefault();
+
+  addPage += 1;
+
+  showLoader();
+  try {
+    imgset = await fetchImg();
+
+    if (perPage > imgset.length) {
+      iziToast.error({
+        color: 'blue',
+        message: `We're sorry, but you've reached the end of search results.`,
+        position: 'topRight',
+      });
+      addImgs.style.display = 'none';
+      return;
+    }
+
+    renderImgs(imgset);
+    scroll();
+
+  } catch (error) {
+    iziToast.error({
+      color: 'red',
+      message: `❌ Sorry, there are no images matching your search query. Please try again!`,
+      position: 'topRight',
+    });
+  } finally {
+    hideLoader();
+    handleLoad();
+  }
+});
+window.onload = handleLoad;
