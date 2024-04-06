@@ -11,23 +11,31 @@ let searchImgs;
 
 const perPage = 15;
 let currentPage = 1;
+let simpleLightboxInstance; 
 
 const inputfield = document.querySelector('input');
 const fillForm = document.querySelector('form');
 const addImgs = document.querySelector('#addImg');
+const loadMoreBtn = document.querySelector('#loadMoreBtn');
 
 const preloader = document.querySelector('.preloader');
 
 const showLoader = () => {
   preloader.style.display = 'flex';
 };
+
 const hideLoader = () => {
   preloader.style.display = 'none';
 };
+
 const handleLoad = () => {
   document.body.classList.add('loaded');
   document.body.classList.remove('loaded_hiding');
 };
+
+simpleLightboxInstance = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+});
 
 fillForm.addEventListener('submit', async event => {
   event.preventDefault();
@@ -48,7 +56,7 @@ fillForm.addEventListener('submit', async event => {
   showLoader();
 
   try {
-    imgset = await fetchImg(searchImgs);
+    imgset = await fetchImg(searchImgs, perPage, currentPage);
 
     if (!imgset.hits.length) {
       iziToast.error({
@@ -70,7 +78,9 @@ fillForm.addEventListener('submit', async event => {
       });
     }
     renderImgs(imgset.hits);
+    simpleLightboxInstance.refresh();
     scroll();
+    inputfield.value = '';
   } catch (error) {
     iziToast.error({
       color: 'red',
@@ -81,8 +91,6 @@ fillForm.addEventListener('submit', async event => {
     hideLoader();
     handleLoad();
   }
-
-  inputfield.value = '';
 });
 
 addImgs.addEventListener('click', async event => {
@@ -90,7 +98,7 @@ addImgs.addEventListener('click', async event => {
   showLoader();
   try {
     currentPage++;
-    imgset = await fetchImg(searchImgs, currentPage);
+    imgset = await fetchImg(searchImgs, perPage, currentPage);
     if (!imgset.hits.length) {
       iziToast.error({
         color: 'blue',
@@ -101,6 +109,7 @@ addImgs.addEventListener('click', async event => {
       return;
     }
     renderImgs(imgset.hits, true);
+    simpleLightboxInstance.refresh(); 
     scroll();
   } catch (error) {
     iziToast.error({
