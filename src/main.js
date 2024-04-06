@@ -1,4 +1,3 @@
-// main.js
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 import SimpleLightbox from 'simplelightbox';
@@ -14,7 +13,7 @@ const perPage = 15;
 
 const inputfield = document.querySelector('#searchInput');
 const fillForm = document.querySelector('form');
-const addImgs = document.querySelector('#addImg');
+let addImgs = document.querySelector('#addImg');
 
 const preloader = document.querySelector('.preloader');
 
@@ -124,4 +123,4 @@ async function scroll() {
   });
 }
 
-
+addImgs.style.display = 'none';
