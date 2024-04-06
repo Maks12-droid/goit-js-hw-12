@@ -16,7 +16,8 @@ let simpleLightboxInstance;
 const inputfield = document.querySelector('input');
 const fillForm = document.querySelector('form');
 const addImgs = document.querySelector('#addImg');
-const loadMoreBtn = document.querySelector('#loadMoreBtn');
+const loadMoreBtn = document.querySelector('#loadMoreBtn'); 
+loadMoreBtn.style.display = 'none'; 
 
 const preloader = document.querySelector('.preloader');
 
@@ -69,7 +70,7 @@ fillForm.addEventListener('submit', async event => {
     }
 
     if (perPage <= imgset.hits.length) {
-      addImgs.style.display = 'flex';
+      loadMoreBtn.style.display = 'flex'; 
     } else {
       iziToast.error({
         color: 'blue',
@@ -78,8 +79,9 @@ fillForm.addEventListener('submit', async event => {
       });
     }
     renderImgs(imgset.hits);
-    simpleLightboxInstance.refresh();
+    simpleLightboxInstance.refresh(); 
     scroll();
+
     inputfield.value = '';
   } catch (error) {
     iziToast.error({
@@ -105,7 +107,7 @@ addImgs.addEventListener('click', async event => {
         message: `We're sorry, but you've reached the end of search results.`,
         position: 'topRight',
       });
-      addImgs.style.display = 'none';
+      loadMoreBtn.style.display = 'none'; 
       return;
     }
     renderImgs(imgset.hits, true);
@@ -133,6 +135,7 @@ async function scroll() {
     behavior: 'smooth',
   });
 }
+
 
 
 
