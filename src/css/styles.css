@@ -189,10 +189,13 @@ img {
 }
 
 #addImg {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-bottom: 20px;
-  display: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background-color: #2d428f;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  margin-top: 20px;
 }
