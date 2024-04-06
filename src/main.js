@@ -13,7 +13,7 @@ const perPage = 15;
 
 const inputfield = document.querySelector('#searchInput');
 const fillForm = document.querySelector('form');
-let addImgs = document.querySelector('#addImg');
+const addImgs = document.querySelector('#addImg');
 
 const preloader = document.querySelector('.preloader');
 
@@ -123,4 +123,3 @@ async function scroll() {
   });
 }
 
-addImgs.style.display = 'none';
