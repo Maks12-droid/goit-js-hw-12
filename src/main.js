@@ -5,7 +5,7 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 import { renderImgs } from './js/render-functions';
 import { fetchImg } from './js/pixabay-api';
 
-const setGallery = document.querySelector('.gallery');
+const setGallery = document.querySelector('.gallery-list');
 let imgset;
 let searchImgs;
 let currentPage = 1;
