@@ -1,13 +1,16 @@
-import axios from 'axios';
+import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import { renderImgs } from './js/render-functions';
+import { fetchImg } from './js/pixabay-api';
 
-const setGallery = document.querySelector('.gallery');
+const setGallery = document.querySelector('ul.gallery');
 let imgset;
 let searchImgs;
-let currentPage = 1;
+
 const perPage = 15;
+let currentPage = 1;
 
 const inputfield = document.querySelector('input');
 const fillForm = document.querySelector('form');
@@ -18,28 +21,26 @@ const preloader = document.querySelector('.preloader');
 const showLoader = () => {
   preloader.style.display = 'flex';
 };
-
 const hideLoader = () => {
   preloader.style.display = 'none';
 };
-
 const handleLoad = () => {
   document.body.classList.add('loaded');
   document.body.classList.remove('loaded_hiding');
 };
 
-const lightbox = new SimpleLightbox('.gallery a', {
-  captionsData: 'alt',
-});
-
-fillForm.addEventListener('submit', async (event) => {
+fillForm.addEventListener('submit', async event => {
   event.preventDefault();
   currentPage = 1;
   imgset = {};
   searchImgs = inputfield.value.trim();
 
   if (!searchImgs.length) {
-    alert('Please fill in the field for search images.');
+    iziToast.error({
+      color: 'yellow',
+      message: ` Please fill in the field for search images.`,
+      position: 'topRight',
+    });
     setGallery.innerHTML = '';
     return;
   }
@@ -47,66 +48,64 @@ fillForm.addEventListener('submit', async (event) => {
   showLoader();
 
   try {
-    const response = await axios.get('https://pixabay.com/api/', {
-      params: {
-        key: '22926721-5d20aa08498ffd1ff2f906542',
-        q: searchImgs,
-        image_type: 'photo',
-        orientation: 'horizontal',
-        safesearch: true,
-        per_page: perPage,
-        page: currentPage,
-      },
-    });
-    imgset = response.data;
+    imgset = await fetchImg(searchImgs);
 
     if (!imgset.hits.length) {
-      alert('Sorry, there are no images matching your search query. Please try again!');
+      iziToast.error({
+        color: 'red',
+        message: `❌ Sorry, there are no images matching your search query. Please try again!`,
+        position: 'topRight',
+      });
       addImgs.style.display = 'none';
       return;
     }
 
     if (perPage <= imgset.hits.length) {
-      addImgs.style.display = 'block';
+      addImgs.style.display = 'flex';
     } else {
-      alert("We're sorry, but you've reached the end of search results.");
+      iziToast.error({
+        color: 'blue',
+        message: `We're sorry, but you've reached the end of search results.`,
+        position: 'topRight',
+      });
     }
-
     renderImgs(imgset.hits);
     scroll();
   } catch (error) {
-    alert('Sorry, there was an error while fetching images. Please try again!');
+    iziToast.error({
+      color: 'red',
+      message: `❌ Sorry, there was an error while fetching images. Please try again!`,
+      position: 'topRight',
+    });
   } finally {
     hideLoader();
     handleLoad();
   }
 });
 
-addImgs.addEventListener('click', async () => {
+addImgs.addEventListener('click', async event => {
+  event.preventDefault();
   showLoader();
   try {
     currentPage++;
-    const response = await axios.get('https://pixabay.com/api/', {
-      params: {
-        key: '22926721-5d20aa08498ffd1ff2f906542',
-        q: searchImgs,
-        image_type: 'photo',
-        orientation: 'horizontal',
-        safesearch: true,
-        per_page: perPage,
-        page: currentPage,
-      },
-    });
-    imgset = response.data;
+    imgset = await fetchImg(searchImgs, currentPage);
     if (!imgset.hits.length) {
-      alert("We're sorry, but you've reached the end of search results.");
+      iziToast.error({
+        color: 'blue',
+        message: `We're sorry, but you've reached the end of search results.`,
+        position: 'topRight',
+      });
       addImgs.style.display = 'none';
       return;
     }
     renderImgs(imgset.hits, true);
     scroll();
   } catch (error) {
-    alert('Sorry, there was an error while fetching images. Please try again!');
+    iziToast.error({
+      color: 'red',
+      message: `:x: Sorry, there was an error while fetching images. Please try again!`,
+      position: 'topRight',
+    });
   } finally {
     hideLoader();
     handleLoad();
@@ -123,6 +122,3 @@ async function scroll() {
     behavior: 'smooth',
   });
 }
-
-
-
