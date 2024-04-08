@@ -44,7 +44,6 @@ input {
   font-weight: 400;
   color: #464444;
   border: 1px solid #414040;
-
 }
 
 button {
@@ -57,36 +56,32 @@ button {
 }
 
 #addImg {
-  position: relative;
+  position: fixed;
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
   margin-bottom: 20px;
+  display: none;
 }
 
-.gallery {
+.gallery-list {
   display: flex;
-  gap: 30px;
-  list-style-type: none;
   flex-wrap: wrap;
-  margin: 30px;
+  gap: 30px;
+  margin: 30px auto;
   justify-content: center;
 }
 
 .img-blok {
   width: 360px;
-  border: #424242 solid 1px;
-  background: 5px;
-
-
+  border: 1px solid #424242;
+  background: #fff;
 }
 
 .image-descript {
-  flex-wrap: nowrap;
   display: flex;
-  gap: 14px;
-  list-style-type: none;
   justify-content: center;
+  gap: 14px;
   padding: 10px;
   height: 48px;
   font-size: 12px;
@@ -101,7 +96,7 @@ h3 {
 img {
   display: block;
   height: 200px;
-  width: 360px;
+  width: 100%;
   object-fit: cover;
 }
 
@@ -169,21 +164,4 @@ img {
 
 .loaded .preloader {
   display: none;
-}
-
-#addImg {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-bottom: 20px;
-  display: none;
-}
-
-.gallery {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 30px;
-  margin: 30px;
 }
