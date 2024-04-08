@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export async function fetchImg(query, page = 1) {
   const BASE_URL = "https://pixabay.com/api/";
   const searchParams = new URLSearchParams({
@@ -6,11 +8,19 @@ export async function fetchImg(query, page = 1) {
     image_type: "photo",
     orientation: "horizontal",
     safesearch: true,
-    page: page // Додано параметр сторінки
+    page: page, 
+    per_page: 15 
   });
+
   const url = `${BASE_URL}?${searchParams}`;
-  const response = await fetch(url);
-  const data = await response.json();
-  return data;
+
+  try {
+    const response = await axios.get(url);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching images:', error);
+    throw error; 
+  }
 }
+
 

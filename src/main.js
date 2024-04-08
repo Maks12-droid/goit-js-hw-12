@@ -2,16 +2,14 @@ import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
+import axios from 'axios';
 import { renderImgs } from './js/render-functions';
-import { fetchImg } from './js/pixabay-api';
 
 const setGallery = document.querySelector('.gallery-list');
-let imgset;
-let searchImgs;
 let currentPage = 1;
 const perPage = 15;
 
-const inputfield = document.querySelector('input');
+const inputfield = document.querySelector('#searchInput');
 const fillForm = document.querySelector('form');
 const addImgs = document.querySelector('#addImg');
 
@@ -33,8 +31,7 @@ const handleLoad = () => {
 fillForm.addEventListener('submit', async (event) => {
   event.preventDefault();
   currentPage = 1;
-  imgset = {};
-  searchImgs = inputfield.value.trim();
+  const searchImgs = inputfield.value.trim();
 
   if (!searchImgs.length) {
     iziToast.error({
@@ -49,7 +46,7 @@ fillForm.addEventListener('submit', async (event) => {
   showLoader();
 
   try {
-    imgset = await fetchImg(searchImgs, currentPage);
+    const imgset = await fetchImg(searchImgs, currentPage);
 
     if (!imgset.hits.length) {
       iziToast.error({
@@ -88,7 +85,7 @@ addImgs.addEventListener('click', async () => {
   showLoader();
   try {
     currentPage++;
-    imgset = await fetchImg(searchImgs, currentPage);
+    const imgset = await fetchImg(inputfield.value.trim(), currentPage);
     if (!imgset.hits.length) {
       iziToast.error({
         color: 'blue',
@@ -122,5 +119,6 @@ async function scroll() {
     behavior: 'smooth',
   });
 }
+
 
 
