@@ -1,15 +1,15 @@
-import iziToast from 'izitoast';
-import 'izitoast/dist/css/iziToast.min.css';
+import axios from 'axios';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import axios from 'axios';
 import { renderImgs } from './js/render-functions';
 
-const setGallery = document.querySelector('.gallery-list');
+const setGallery = document.querySelector('.gallery');
+let imgset;
+let searchImgs;
 let currentPage = 1;
 const perPage = 15;
 
-const inputfield = document.querySelector('#searchInput');
+const inputfield = document.querySelector('input');
 const fillForm = document.querySelector('form');
 const addImgs = document.querySelector('#addImg');
 
@@ -28,17 +28,18 @@ const handleLoad = () => {
   document.body.classList.remove('loaded_hiding');
 };
 
+const lightbox = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+});
+
 fillForm.addEventListener('submit', async (event) => {
   event.preventDefault();
   currentPage = 1;
-  const searchImgs = inputfield.value.trim();
+  imgset = {};
+  searchImgs = inputfield.value.trim();
 
   if (!searchImgs.length) {
-    iziToast.error({
-      color: 'yellow',
-      message: ` Please fill in the field for search images.`,
-      position: 'topRight',
-    });
+    alert('Please fill in the field for search images.');
     setGallery.innerHTML = '';
     return;
   }
@@ -46,14 +47,21 @@ fillForm.addEventListener('submit', async (event) => {
   showLoader();
 
   try {
-    const imgset = await fetchImg(searchImgs, currentPage);
+    const response = await axios.get('https://pixabay.com/api/', {
+      params: {
+        key: '22926721-5d20aa08498ffd1ff2f906542',
+        q: searchImgs,
+        image_type: 'photo',
+        orientation: 'horizontal',
+        safesearch: true,
+        per_page: perPage,
+        page: currentPage,
+      },
+    });
+    imgset = response.data;
 
     if (!imgset.hits.length) {
-      iziToast.error({
-        color: 'red',
-        message: `❌ Sorry, there are no images matching your search query. Please try again!`,
-        position: 'topRight',
-      });
+      alert('Sorry, there are no images matching your search query. Please try again!');
       addImgs.style.display = 'none';
       return;
     }
@@ -61,20 +69,13 @@ fillForm.addEventListener('submit', async (event) => {
     if (perPage <= imgset.hits.length) {
       addImgs.style.display = 'block';
     } else {
-      iziToast.error({
-        color: 'blue',
-        message: `We're sorry, but you've reached the end of search results.`,
-        position: 'topRight',
-      });
+      alert("We're sorry, but you've reached the end of search results.");
     }
+
     renderImgs(imgset.hits);
     scroll();
   } catch (error) {
-    iziToast.error({
-      color: 'red',
-      message: `❌ Sorry, there was an error while fetching images. Please try again!`,
-      position: 'topRight',
-    });
+    alert('Sorry, there was an error while fetching images. Please try again!');
   } finally {
     hideLoader();
     handleLoad();
@@ -85,24 +86,27 @@ addImgs.addEventListener('click', async () => {
   showLoader();
   try {
     currentPage++;
-    const imgset = await fetchImg(inputfield.value.trim(), currentPage);
+    const response = await axios.get('https://pixabay.com/api/', {
+      params: {
+        key: '22926721-5d20aa08498ffd1ff2f906542',
+        q: searchImgs,
+        image_type: 'photo',
+        orientation: 'horizontal',
+        safesearch: true,
+        per_page: perPage,
+        page: currentPage,
+      },
+    });
+    imgset = response.data;
     if (!imgset.hits.length) {
-      iziToast.error({
-        color: 'blue',
-        message: `We're sorry, but you've reached the end of search results.`,
-        position: 'topRight',
-      });
+      alert("We're sorry, but you've reached the end of search results.");
       addImgs.style.display = 'none';
       return;
     }
     renderImgs(imgset.hits, true);
     scroll();
   } catch (error) {
-    iziToast.error({
-      color: 'red',
-      message: `❌ Sorry, there was an error while fetching images. Please try again!`,
-      position: 'topRight',
-    });
+    alert('Sorry, there was an error while fetching images. Please try again!');
   } finally {
     hideLoader();
     handleLoad();
