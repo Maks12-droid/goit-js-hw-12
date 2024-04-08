@@ -2,17 +2,16 @@ import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
+import axios from 'axios'; 
 import { renderImgs } from './js/render-functions';
-import { fetchImg } from './js/pixabay-api';
 
-const setGallery = document.querySelector('ul.gallery');
+const setGallery = document.querySelector('.gallery-list');
 let imgset;
 let searchImgs;
-
-const perPage = 15;
 let currentPage = 1;
+const perPage = 15;
 
-const inputfield = document.querySelector('input');
+const inputfield = document.querySelector('#searchInput');
 const fillForm = document.querySelector('form');
 const addImgs = document.querySelector('#addImg');
 
@@ -21,15 +20,17 @@ const preloader = document.querySelector('.preloader');
 const showLoader = () => {
   preloader.style.display = 'flex';
 };
+
 const hideLoader = () => {
   preloader.style.display = 'none';
 };
+
 const handleLoad = () => {
   document.body.classList.add('loaded');
   document.body.classList.remove('loaded_hiding');
 };
 
-fillForm.addEventListener('submit', async event => {
+fillForm.addEventListener('submit', async (event) => {
   event.preventDefault();
   currentPage = 1;
   imgset = {};
@@ -48,7 +49,7 @@ fillForm.addEventListener('submit', async event => {
   showLoader();
 
   try {
-    imgset = await fetchImg(searchImgs);
+    imgset = await fetchImg(searchImgs, currentPage);
 
     if (!imgset.hits.length) {
       iziToast.error({
@@ -61,7 +62,7 @@ fillForm.addEventListener('submit', async event => {
     }
 
     if (perPage <= imgset.hits.length) {
-      addImgs.style.display = 'flex';
+      addImgs.style.display = 'block';
     } else {
       iziToast.error({
         color: 'blue',
@@ -83,8 +84,7 @@ fillForm.addEventListener('submit', async event => {
   }
 });
 
-addImgs.addEventListener('click', async event => {
-  event.preventDefault();
+addImgs.addEventListener('click', async () => {
   showLoader();
   try {
     currentPage++;
@@ -103,7 +103,7 @@ addImgs.addEventListener('click', async event => {
   } catch (error) {
     iziToast.error({
       color: 'red',
-      message: `:x: Sorry, there was an error while fetching images. Please try again!`,
+      message: `❌ Sorry, there was an error while fetching images. Please try again!`,
       position: 'topRight',
     });
   } finally {

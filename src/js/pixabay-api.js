@@ -24,3 +24,4 @@ export async function fetchImg(query, page = 1) {
 }
 
 
+
