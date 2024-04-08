@@ -5,13 +5,13 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 import { renderImgs } from './js/render-functions';
 import { fetchImg } from './js/pixabay-api';
 
-const setGallery = document.querySelector('.gallery-list');
+const setGallery = document.querySelector('.gallery');
 let imgset;
 let searchImgs;
 let currentPage = 1;
 const perPage = 15;
 
-const inputfield = document.querySelector('#searchInput');
+const inputfield = document.querySelector('input');
 const fillForm = document.querySelector('form');
 const addImgs = document.querySelector('#addImg');
 
