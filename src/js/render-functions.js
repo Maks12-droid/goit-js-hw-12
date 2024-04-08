@@ -3,9 +3,9 @@ import 'izitoast/dist/css/iziToast.min.css';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 const setGallery = document.querySelector('.gallery-list');
-const lightbox = new SimpleLightbox('.gallery a', {
+const lightbox = new SimpleLightbox('.gallery-list a', {
   captionsData: 'alt',
-});
+})
 export function renderImgs(images) {
   const imgGallery = images
     .map(
